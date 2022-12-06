@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 import { UserData, UserLogIn } from './users.dto'
+import { User, UserDocument } from './users.schema'
 
 @Injectable()
 export class UsersService {
-  constructor() {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>
+  ) {}
 
-  findUser(userLogin: UserLogIn): UserLogIn {
-    return
+  async findUser(userId: string): Promise<boolean> {
+    const foundUser = await this.userModel.findById(userId)
+    if (foundUser) {
+      return true
+    }
+    return false
   }
 }

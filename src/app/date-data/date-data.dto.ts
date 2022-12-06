@@ -1,3 +1,7 @@
+export interface DataOnDayReqBody extends DataOnDay {
+  userId: string
+}
+
 export interface DataOnDay {
   author: string
   dateTime: Date
@@ -20,4 +24,9 @@ interface ImageContent {
   url: File
   createdAt: Date
   caption: string
+}
+
+export interface FindDataOnDay {
+  userId: string
+  dateTime: Date
 }

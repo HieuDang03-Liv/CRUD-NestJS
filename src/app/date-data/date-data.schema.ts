@@ -12,8 +12,8 @@ export class DateData {
   @Prop({ required: true })
   dateTime: Date
 
-  @Prop()
-  detailContent: DetailContent
+  @Prop({ type: Object })
+  detailContent: object
 }
 
 export const DateDateSchema = SchemaFactory.createForClass(DateData)
