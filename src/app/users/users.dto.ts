@@ -7,4 +7,5 @@ export interface UserData {
   username: string
   fullname: string
   isAdmin: boolean
+  password: string
 }

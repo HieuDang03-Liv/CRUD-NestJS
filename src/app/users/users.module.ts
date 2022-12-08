@@ -1,8 +1,8 @@
-import { MongooseModule } from '@nestjs/mongoose';
-import { Module, Global } from '@nestjs/common';
-import { User, UserSchema } from './users.schema';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { MongooseModule } from '@nestjs/mongoose'
+import { Module, Global } from '@nestjs/common'
+import { User, UserSchema } from './users.schema'
+import { UsersController } from './users.controller'
+import { UsersService } from './users.service'
 
 @Global()
 @Module({
@@ -10,6 +10,7 @@ import { UsersService } from './users.service';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
   ],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService],
+  exports: [UsersService]
 })
 export class UsersModule {}

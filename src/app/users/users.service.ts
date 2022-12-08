@@ -6,9 +6,7 @@ import { User, UserDocument } from './users.schema'
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async findUser(userId: string): Promise<boolean> {
     const foundUser = await this.userModel.findById(userId)
@@ -16,5 +14,18 @@ export class UsersService {
       return true
     }
     return false
+  }
+
+  async findUserLogin(login: UserLogIn): Promise<UserData> {
+    const foundUser = await this.userModel.findOne({ username: login.username })
+    if (foundUser) {
+      return {
+        username: foundUser.username,
+        fullname: foundUser.fullname,
+        isAdmin: true,
+        password: foundUser.password
+      }
+    }
+    return null
   }
 }

@@ -9,6 +9,9 @@ export class DateData {
   @Prop({ required: true })
   author: string
 
+  @Prop()
+  userId: string
+
   @Prop({ required: true })
   dateTime: Date
 

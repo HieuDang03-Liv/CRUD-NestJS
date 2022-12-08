@@ -6,6 +6,7 @@ export interface DataOnDay {
   author: string
   dateTime: Date
   detailContent: DetailContent
+  userId: string
 }
 
 export interface DetailContent {

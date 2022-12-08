@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import { Model, Types } from 'mongoose'
 import { UsersService } from '../users/users.service'
 import { DataOnDayReqBody, DataOnDay, FindDataOnDay } from './date-data.dto'
 import { DateData, DateDataDocument } from './date-data.schema'
@@ -20,7 +20,8 @@ export class DateDataService {
         await this.dateDateModel.create({
           author: dateDataDTO.author,
           dateTime: dateDataDTO.dateTime,
-          detailContent: dateDataDTO.detailContent
+          detailContent: dateDataDTO.detailContent,
+          userId
         })
         return { message: 'Created successfully!' }
       } else {
@@ -33,13 +34,14 @@ export class DateDataService {
 
   async getAllData(getBody: FindDataOnDay): Promise<DataOnDay | any> {
     try {
-      const foundUserID = await this.dateDateModel.findOne({
-        _id: getBody.userId,
-        dateTime: getBody.dateTime
-      })
+      const foundUserID = await this.userService.findUser(getBody.userId)
       if (foundUserID) {
-        const data = foundUserID
+        const data = await this.dateDateModel.findOne({
+          userId: new Types.ObjectId(getBody.userId),
+          dateTime: new Date(getBody.dateTime).toISOString()
+        })
         return {
+          userId: data.userId,
           author: data.author,
           dateTime: data.dateTime,
           detailContent: data.detailContent
@@ -48,7 +50,7 @@ export class DateDataService {
         return { message: 'Not found user.' }
       }
     } catch (err) {
-      return { message: 'Error!' }
+      return { message: err.message }
     }
   }
 }
