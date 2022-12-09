@@ -9,8 +9,10 @@ import { DateDataService } from './date-data.service'
 @Global()
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: DateData.name, schema: DateDateSchema }]),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: DateData.name, schema: DateDateSchema }
+    ]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
   ],
   controllers: [DateDataController],
   providers: [DateDataService, UsersService]
