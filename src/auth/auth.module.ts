@@ -8,14 +8,7 @@ import { JwtStrategy } from './jwt.strategy'
 import { UsersModule } from 'src/app/users/users.module'
 
 @Module({
-  imports: [
-    PassportModule,
-    UsersModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '15m' }
-    })
-  ],
+  imports: [PassportModule, UsersModule, JwtModule.register({})],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController]
 })

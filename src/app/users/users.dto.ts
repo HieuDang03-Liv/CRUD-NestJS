@@ -9,3 +9,9 @@ export interface UserData {
   isAdmin: boolean
   password: string
 }
+
+export interface VerifiedUser {
+  username: string
+  accessToken: string
+  refreshToken: string
+}

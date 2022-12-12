@@ -9,9 +9,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() body) {
-    return this.authServire.login({
-      username: body.username,
-      password: body.password
-    })
+    return this.authServire.getAccessToken({ username: body.username })
   }
 }

@@ -26,10 +26,28 @@ export class AuthService {
     }
   }
 
-  async login(user: any) {
-    const payload = { username: user.username }
-    return {
-      accessToken: this.jwtService.sign(payload)
-    }
+  login(username: string): string {
+    const payload = { username }
+    const accessToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '60s'
+    })
+    return accessToken
+  }
+
+  getRefreshToken(payload: { username: string }): string {
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: process.env.REFRESH_TOKEN_SECRET,
+      expiresIn: '1h'
+    })
+    return refreshToken
+  }
+
+  getAccessToken(payload: { username: string }): string {
+    const accessToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '60s'
+    })
+    return accessToken
   }
 }
