@@ -14,4 +14,12 @@ export interface VerifiedUser {
   username: string
   accessToken: string
   refreshToken: string
+  expiresAccessDate: Date
+  expiresRefreshDate: Date
+}
+
+export interface RenewAccessToken {
+  expiresRefreshToken: Date
+  refreshToken: string
+  username: string
 }
