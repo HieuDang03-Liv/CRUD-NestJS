@@ -4,7 +4,7 @@ import { compare } from 'bcrypt'
 import { JwtService } from '@nestjs/jwt'
 import { RenewAccessToken, VerifiedUser } from 'src/app/users/users.dto'
 import * as moment from 'moment'
-import { REFRESH_TOKEN_EXPIRES_MSG, TOKEN_AVAILABLE_TIME } from 'src/app/common/constants'
+import { ACCESS_TOKEN_STILL_VALID, REFRESH_TOKEN_EXPIRES_MSG, TOKEN_AVAILABLE_TIME } from 'src/app/common/constants'
 
 @Injectable()
 export class AuthService {
@@ -42,6 +42,12 @@ export class AuthService {
   }
 
   renewToken(refreshTokenInfo: RenewAccessToken): HttpException | string {
+    //Forbid to get new access token if another is existed and valid
+    const expiresTimeAccessToken = moment(refreshTokenInfo.expiresAccessToken).toDate()
+    if (this.isAccessTokenStillValid(expiresTimeAccessToken)) {
+      throw new HttpException(ACCESS_TOKEN_STILL_VALID, HttpStatus.FORBIDDEN)
+    }
+
     const newAccessToken = this.getNewAccessToken(refreshTokenInfo)
     if (!newAccessToken) {
       throw new HttpException(REFRESH_TOKEN_EXPIRES_MSG, HttpStatus.FORBIDDEN)
@@ -52,8 +58,7 @@ export class AuthService {
   getNewAccessToken(refreshTokenInfo: RenewAccessToken): string | null {
     let newAccessToken = null
     const originExpireRefreshTime = moment(refreshTokenInfo.expiresRefreshToken)
-    const currentTime = moment().toDate()
-    const isRefreshTokenExpired = moment(currentTime).diff(originExpireRefreshTime) >= 0
+    const isRefreshTokenExpired = moment().diff(originExpireRefreshTime) >= 0
     if (!isRefreshTokenExpired) {
       newAccessToken = this.getAccessToken({ username: refreshTokenInfo.username })
     }
@@ -86,5 +91,10 @@ export class AuthService {
       .add(timeAmount as any, timeUnit as any)
       .toDate()
     return expireDay
+  }
+
+  isAccessTokenStillValid(expireDateAccessToken: Date): boolean {
+    const isStillValid = moment().diff(expireDateAccessToken) < 0
+    return isStillValid
   }
 }

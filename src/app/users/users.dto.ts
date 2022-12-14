@@ -1,12 +1,15 @@
+import { Types } from 'mongoose'
+
 export interface UserLogIn {
   username: string
   password: string
 }
 
 export interface UserData {
+  _id: Types.ObjectId
   username: string
   fullname: string
-  isAdmin: boolean
+  isAdmin?: boolean
   password: string
 }
 
@@ -22,4 +25,5 @@ export interface RenewAccessToken {
   expiresRefreshToken: Date
   refreshToken: string
   username: string
+  expiresAccessToken: Date
 }

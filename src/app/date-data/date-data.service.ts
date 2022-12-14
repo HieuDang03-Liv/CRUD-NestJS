@@ -15,7 +15,7 @@ export class DateDataService {
   async createDateData(dateDataDTO: DataOnDayReqBody): Promise<any> {
     try {
       const userId = dateDataDTO.userId
-      const foundUserId = await this.userService.findUser(userId)
+      const foundUserId = await this.userService.canFindUserId(userId)
       if (foundUserId) {
         await this.dateDateModel.create({
           author: dateDataDTO.author,
@@ -34,7 +34,7 @@ export class DateDataService {
 
   async getAllData(getBody: FindDataOnDay): Promise<DataOnDay | any> {
     try {
-      const foundUserID = await this.userService.findUser(getBody.userId)
+      const foundUserID = await this.userService.canFindUserId(getBody.userId)
       if (foundUserID) {
         const data = await this.dateDateModel.findOne({
           userId: new Types.ObjectId(getBody.userId),
