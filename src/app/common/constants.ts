@@ -9,3 +9,5 @@ export const TOKEN_AVAILABLE_TIME = {
 export const REFRESH_TOKEN_EXPIRES_MSG = 'REFRESH TOKEN HAS EXPIRED.'
 
 export const ACCESS_TOKEN_STILL_VALID = 'ACCESS TOKEN IS STILL VALID.'
+
+export const WRONG_CREDENTIAL_MSG = 'Wrong credential. Please try again.'
